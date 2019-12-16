@@ -1,6 +1,6 @@
 const overlay = document.getElementById('overlay');
 const title = document.querySelector('.title');
-const start = document.querySelector('.btn__reset');
+const startGame = document.querySelector('.btn__reset');
 const randomDiv = document.getElementById('phrase');
 const letter = document.getElementsByClassName('letter');
 const show = document.getElementsByClassName('show');
@@ -10,7 +10,10 @@ const scoreboard = document.getElementById('scoreboard');
 const triesLi = scoreboard.getElementsByClassName('tries');
 const randomUl = randomDiv.querySelector('ul');
 
-start.addEventListener('click',function ()  {
+
+
+
+startGame.addEventListener('click',function ()  {
     overlay.style.display = "none";
 });
 
@@ -21,15 +24,14 @@ const phrases = [
     'This is nice',
     'Basketball Nice',
     'Never down',
-    'Keeping Real'
+    'Keeping Real',
 ];
 
 
 //function to choose phrases
-function getRandomPhraseAsArray(arr) {
-    const quotePhrase = arr[Math.floor(Math.random()*6)];
-    const upperRandom = quotePhrase.toUpperCase();
-    return upperRandom.split('');
+function getRandomPhraseAsArray(array) {
+    const randomPhrase = array[Math.floor(Math.random() * array.length)];
+    return randomPhrase.toUpperCase().split('');
 }
 //call the function to choose phrases
 const randomArray = getRandomPhraseAsArray(phrases);
@@ -37,9 +39,9 @@ const randomArray = getRandomPhraseAsArray(phrases);
 
 
 // Function to display the phrases
-function addPhraseToDisplay(arr) {
-    for (let i = 0; i < arr.length; i++) {
-        var arri = arr[i];
+function addPhraseToDisplay(array) {
+    for (let i = 0; i < array.length; i++) {
+        var arri = array[i];
         var liLetter = document.createElement('li');
         randomUl.appendChild(liLetter);
         liLetter.innerHTML = arri;
@@ -76,23 +78,23 @@ function checkWin() {
   const allFonts = show.length;
   //Function flex;
   function flex () {
-    overlay.style.display = 'flex';
+    overlay.style.display = '';
     return;
   }
 
     if (correctGuess === allFonts) {
         overlay.classList.add('win');
         flex ();
-        start.textContent = "play"
+        startGame.textContent = "play"
         title.textContent = "Great. You won buddy!"
     }
 
-    else if (missed >= 5) {
+    if (missed >= 5) {
         overlay.classList.add('lose');
         flex ();
-        start.textContent = "play"
+        startGame.textContent = "play"
         title.textContent = "Uhh You lose!"
-    } else {}
+    }
 }
 
 function resetHeart () {
@@ -115,14 +117,16 @@ function newButton () {
   }
 }
 
+function newLayout () {
+overlay.classList.remove('win', 'lose');
+}
+
 function newLi () {
   const resetPhrases = getRandomPhraseAsArray(phrases);
   addPhraseToDisplay(resetPhrases);
 }
 
-function newLayout () {
-  overlay.style.display = "none";
-}
+
 
 //When fonts button is pressed
 window.addEventListener('click', (e) => {
@@ -146,14 +150,14 @@ window.addEventListener('click', (e) => {
 
 
 //Reset
-start.addEventListener('click', (e) => {
+startGame.addEventListener('click', (e) => {
     if (e.target.textContent === 'play') {
         // set missed to 0
         missed = 0;
         resetHeart ();
         resetLi ();
         newLi ();
-        newLayout ();
         newButton ();
+        newLayout ();
 }
 });
